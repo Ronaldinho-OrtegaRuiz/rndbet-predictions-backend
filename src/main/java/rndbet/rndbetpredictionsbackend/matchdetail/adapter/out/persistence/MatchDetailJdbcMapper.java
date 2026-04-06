@@ -19,7 +19,7 @@ final class MatchDetailJdbcMapper {
     private MatchDetailJdbcMapper() {}
 
     /**
-     * Cabecera del detalle: {@code m.*} + {@code home_team_name}, {@code away_team_name}. Avanza el cursor con
+     * Cabecera del detalle: {@code m.*} + nombres y logos de equipos. Avanza el cursor con
      * {@link ResultSet#next()}; si no hay fila, devuelve vacío.
      */
     static Optional<MatchDetailHeaderBundle> firstHeaderOrEmpty(ResultSet rs) throws SQLException {
@@ -28,7 +28,11 @@ final class MatchDetailJdbcMapper {
         }
         MatchRow m = MatchRow.from(rs);
         return Optional.of(new MatchDetailHeaderBundle(
-                m, rs.getString("home_team_name"), rs.getString("away_team_name")));
+                m,
+                rs.getString("home_team_name"),
+                rs.getString("away_team_name"),
+                rs.getString("home_team_logo_url"),
+                rs.getString("away_team_logo_url")));
     }
 
     /** Una fila de {@code team_match_stats} hacia los mapas local / visitante. */
@@ -80,7 +84,9 @@ final class MatchDetailJdbcMapper {
                 fecha,
                 m.status(),
                 h.homeTeamName(),
+                h.homeTeamLogoUrl(),
                 h.awayTeamName(),
+                h.awayTeamLogoUrl(),
                 m.homeScore(),
                 m.awayScore(),
                 homeStats,
@@ -90,4 +96,9 @@ final class MatchDetailJdbcMapper {
 }
 
 /** Paquete-local: resultado de la query de cabecera del partido. */
-record MatchDetailHeaderBundle(MatchRow match, String homeTeamName, String awayTeamName) {}
+record MatchDetailHeaderBundle(
+        MatchRow match,
+        String homeTeamName,
+        String awayTeamName,
+        String homeTeamLogoUrl,
+        String awayTeamLogoUrl) {}

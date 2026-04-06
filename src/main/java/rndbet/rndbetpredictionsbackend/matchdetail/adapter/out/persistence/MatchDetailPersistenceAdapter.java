@@ -55,7 +55,9 @@ public class MatchDetailPersistenceAdapter implements LoadMatchDetailPort {
                 """
                         SELECT m.*,
                                ht.name AS home_team_name,
-                               at.name AS away_team_name
+                               at.name AS away_team_name,
+                               ht.logo_url AS home_team_logo_url,
+                               at.logo_url AS away_team_logo_url
                         FROM matches m
                         JOIN teams ht ON ht.id = m.home_team_id
                         JOIN teams at ON at.id = m.away_team_id

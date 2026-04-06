@@ -13,7 +13,7 @@ final class MatchdayJdbcMapper {
     private MatchdayJdbcMapper() {}
 
     /**
-     * {@code ResultSet} con {@code m.*}, {@code home_team_name}, {@code away_team_name},
+     * {@code ResultSet} con {@code m.*}, nombres y logos de equipos,
      * {@code red_cards_home}, {@code red_cards_away} (como en la query de jornada).
      */
     static MatchdayFixture toFixture(ResultSet rs) throws SQLException {
@@ -24,8 +24,10 @@ final class MatchdayJdbcMapper {
                 when,
                 m.status(),
                 rs.getString("home_team_name"),
+                rs.getString("home_team_logo_url"),
                 m.homeScore(),
                 rs.getString("away_team_name"),
+                rs.getString("away_team_logo_url"),
                 m.awayScore(),
                 rs.getInt("red_cards_home"),
                 rs.getInt("red_cards_away"));

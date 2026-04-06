@@ -15,8 +15,10 @@ public final class StandingsCalculator {
         Map<Integer, TeamAccumulator> byTeam = new HashMap<>();
 
         for (FinishedMatchForStandings m : matchesOrderedByDate) {
-            TeamAccumulator home = byTeam.computeIfAbsent(m.homeTeamId(), id -> new TeamAccumulator(id, m.homeTeamName()));
-            TeamAccumulator away = byTeam.computeIfAbsent(m.awayTeamId(), id -> new TeamAccumulator(id, m.awayTeamName()));
+            TeamAccumulator home = byTeam.computeIfAbsent(
+                    m.homeTeamId(), id -> new TeamAccumulator(id, m.homeTeamName(), m.homeTeamLogoUrl()));
+            TeamAccumulator away = byTeam.computeIfAbsent(
+                    m.awayTeamId(), id -> new TeamAccumulator(id, m.awayTeamName(), m.awayTeamLogoUrl()));
 
             home.played++;
             away.played++;
@@ -66,6 +68,7 @@ public final class StandingsCalculator {
                     rank,
                     t.teamId,
                     t.teamName,
+                    t.teamLogoUrl,
                     t.played,
                     t.won,
                     t.drawn,
@@ -99,6 +102,7 @@ public final class StandingsCalculator {
     private static final class TeamAccumulator {
         private final int teamId;
         private final String teamName;
+        private final String teamLogoUrl;
         private int played;
         private int won;
         private int drawn;
@@ -107,9 +111,10 @@ public final class StandingsCalculator {
         private int goalsAgainst;
         private final List<FormLetter> formChronological = new ArrayList<>();
 
-        private TeamAccumulator(int teamId, String teamName) {
+        private TeamAccumulator(int teamId, String teamName, String teamLogoUrl) {
             this.teamId = teamId;
             this.teamName = teamName;
+            this.teamLogoUrl = teamLogoUrl;
         }
 
         private int points() {

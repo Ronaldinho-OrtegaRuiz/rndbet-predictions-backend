@@ -57,6 +57,8 @@ public class MatchdayPersistenceAdapter implements LoadMatchdayFixturesPort {
                         SELECT m.*,
                                ht.name AS home_team_name,
                                at.name AS away_team_name,
+                               ht.logo_url AS home_team_logo_url,
+                               at.logo_url AS away_team_logo_url,
                                COALESCE(rc.red_home, 0) AS red_cards_home,
                                COALESCE(rc.red_away, 0) AS red_cards_away
                         FROM matches m

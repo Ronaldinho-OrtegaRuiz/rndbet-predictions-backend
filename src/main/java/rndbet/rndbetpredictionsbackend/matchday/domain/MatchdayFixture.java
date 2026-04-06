@@ -7,8 +7,10 @@ public record MatchdayFixture(
         Instant date,
         String status,
         String homeTeamName,
+        String homeTeamLogoUrl,
         Integer homeScore,
         String awayTeamName,
+        String awayTeamLogoUrl,
         Integer awayScore,
         int homeRedCards,
         int awayRedCards

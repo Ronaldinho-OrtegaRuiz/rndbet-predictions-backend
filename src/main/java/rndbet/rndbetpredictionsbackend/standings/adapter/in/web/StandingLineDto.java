@@ -1,5 +1,6 @@
 package rndbet.rndbetpredictionsbackend.standings.adapter.in.web;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import rndbet.rndbetpredictionsbackend.standings.domain.FormLetter;
 import rndbet.rndbetpredictionsbackend.standings.domain.StandingRow;
@@ -10,6 +11,9 @@ public record StandingLineDto(
         @JsonProperty("posicion") int posicion,
         @JsonProperty("equipo_id") int equipoId,
         @JsonProperty("equipo") String equipo,
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @JsonProperty("logo_url")
+        String logoUrl,
         @JsonProperty("partidos_jugados") int partidosJugados,
         @JsonProperty("partidos_ganados") int partidosGanados,
         @JsonProperty("partidos_empatados") int partidosEmpatados,
@@ -25,6 +29,7 @@ public record StandingLineDto(
                 row.position(),
                 row.teamId(),
                 row.teamName(),
+                row.teamLogoUrl(),
                 row.played(),
                 row.won(),
                 row.drawn(),

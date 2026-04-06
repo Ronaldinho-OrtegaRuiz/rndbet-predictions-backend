@@ -17,9 +17,9 @@ class StandingsCalculatorTest {
         Instant t2 = Instant.parse("2024-08-15T12:00:00Z");
 
         List<FinishedMatchForStandings> matches = List.of(
-                new FinishedMatchForStandings(1, t0, 1, "A", 2, "B", 2, 0),
-                new FinishedMatchForStandings(2, t1, 2, "B", 3, "C", 1, 1),
-                new FinishedMatchForStandings(3, t2, 3, "C", 1, "A", 0, 3));
+                new FinishedMatchForStandings(1, t0, 1, "A", null, 2, "B", null, 2, 0),
+                new FinishedMatchForStandings(2, t1, 2, "B", null, 3, "C", null, 1, 1),
+                new FinishedMatchForStandings(3, t2, 3, "C", null, 1, "A", null, 0, 3));
 
         List<StandingRow> table = StandingsCalculator.compute(matches);
 
@@ -49,8 +49,8 @@ class StandingsCalculatorTest {
         Instant t1 = Instant.parse("2024-08-02T12:00:00Z");
 
         List<FinishedMatchForStandings> matches = List.of(
-                new FinishedMatchForStandings(1, t0, 1, "BetterGd", 3, "Z", 3, 0),
-                new FinishedMatchForStandings(2, t1, 2, "WorseGd", 3, "Z", 2, 0));
+                new FinishedMatchForStandings(1, t0, 1, "BetterGd", null, 3, "Z", null, 3, 0),
+                new FinishedMatchForStandings(2, t1, 2, "WorseGd", null, 3, "Z", null, 2, 0));
 
         List<StandingRow> table = StandingsCalculator.compute(matches);
 
@@ -65,8 +65,8 @@ class StandingsCalculatorTest {
         Instant t1 = Instant.parse("2024-08-02T12:00:00Z");
 
         List<FinishedMatchForStandings> matches = List.of(
-                new FinishedMatchForStandings(1, t0, 1, "LowerGf", 3, "C", 2, 1),
-                new FinishedMatchForStandings(2, t1, 2, "HigherGf", 3, "C", 3, 2));
+                new FinishedMatchForStandings(1, t0, 1, "LowerGf", null, 3, "C", null, 2, 1),
+                new FinishedMatchForStandings(2, t1, 2, "HigherGf", null, 3, "C", null, 3, 2));
 
         List<StandingRow> table = StandingsCalculator.compute(matches);
 
@@ -80,7 +80,7 @@ class StandingsCalculatorTest {
         List<FinishedMatchForStandings> matches = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             Instant when = base.plusSeconds(i * 86_400L);
-            matches.add(new FinishedMatchForStandings(i + 1, when, 1, "Solo", 2, "Opp", 1, 0));
+            matches.add(new FinishedMatchForStandings(i + 1, when, 1, "Solo", null, 2, "Opp", null, 1, 0));
         }
         List<StandingRow> table = StandingsCalculator.compute(matches);
         StandingRow solo = table.stream().filter(r -> r.teamId() == 1).findFirst().orElseThrow();
@@ -93,7 +93,7 @@ class StandingsCalculatorTest {
     void sharedPosition_twoTeamsTied() {
         Instant t0 = Instant.parse("2024-08-01T12:00:00Z");
         List<FinishedMatchForStandings> matches = List.of(
-                new FinishedMatchForStandings(1, t0, 1, "A", 2, "B", 1, 1));
+                new FinishedMatchForStandings(1, t0, 1, "A", null, 2, "B", null, 1, 1));
 
         List<StandingRow> table = StandingsCalculator.compute(matches);
 

@@ -30,7 +30,9 @@ public class StandingsPersistenceAdapter implements LoadStandingsDataPort {
                 """
                         SELECT m.*,
                                th.name AS home_team_name,
-                               ta.name AS away_team_name
+                               ta.name AS away_team_name,
+                               th.logo_url AS home_team_logo_url,
+                               ta.logo_url AS away_team_logo_url
                         FROM matches m
                         JOIN teams th ON th.id = m.home_team_id
                         JOIN teams ta ON ta.id = m.away_team_id

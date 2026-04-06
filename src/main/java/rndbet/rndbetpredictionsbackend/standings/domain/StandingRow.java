@@ -6,6 +6,7 @@ public record StandingRow(
         int position,
         int teamId,
         String teamName,
+        String teamLogoUrl,
         int played,
         int won,
         int drawn,

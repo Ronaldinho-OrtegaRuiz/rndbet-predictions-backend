@@ -10,8 +10,10 @@ public record FinishedMatchForStandings(
         Instant date,
         int homeTeamId,
         String homeTeamName,
+        String homeTeamLogoUrl,
         int awayTeamId,
         String awayTeamName,
+        String awayTeamLogoUrl,
         int homeGoals,
         int awayGoals
 ) {
