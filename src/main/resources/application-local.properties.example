@@ -1,0 +1,3 @@
+# Opcional. Si solo necesitás password, usá .env con SUPABASE_DB_PASSWORD (ver .env.example).
+#
+# spring.datasource.password=...   (solo si no usás .env)
