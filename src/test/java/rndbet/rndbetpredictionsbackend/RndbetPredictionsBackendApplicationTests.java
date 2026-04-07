@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import rndbet.rndbetpredictionsbackend.auth.application.port.out.LoadUserCredentialsPort;
 import rndbet.rndbetpredictionsbackend.matchday.application.port.out.LoadMatchdayFixturesPort;
 import rndbet.rndbetpredictionsbackend.matchdetail.application.port.out.LoadMatchDetailPort;
 import rndbet.rndbetpredictionsbackend.standings.application.port.out.LoadStandingsDataPort;
@@ -29,6 +30,9 @@ class RndbetPredictionsBackendApplicationTests {
 
     @MockitoBean
     LoadMatchDetailPort loadMatchDetailPort;
+
+    @MockitoBean
+    LoadUserCredentialsPort loadUserCredentialsPort;
 
     @Test
     void contextLoads() {
