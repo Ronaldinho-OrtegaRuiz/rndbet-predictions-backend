@@ -8,6 +8,7 @@ import rndbet.rndbetpredictionsbackend.auth.application.port.out.LoadUserCredent
 import rndbet.rndbetpredictionsbackend.matchday.application.port.out.LoadMatchdayFixturesPort;
 import rndbet.rndbetpredictionsbackend.matchdetail.application.port.out.LoadMatchDetailPort;
 import rndbet.rndbetpredictionsbackend.standings.application.port.out.LoadStandingsDataPort;
+import rndbet.rndbetpredictionsbackend.stattargets.application.port.out.UserMatchStatTargetsPort;
 
 @SpringBootTest(
         properties = {
@@ -33,6 +34,9 @@ class RndbetPredictionsBackendApplicationTests {
 
     @MockitoBean
     LoadUserCredentialsPort loadUserCredentialsPort;
+
+    @MockitoBean
+    UserMatchStatTargetsPort userMatchStatTargetsPort;
 
     @Test
     void contextLoads() {

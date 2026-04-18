@@ -33,6 +33,25 @@ public class MatchDetailPersistenceAdapter implements LoadMatchDetailPort {
     }
 
     @Override
+    public boolean matchExistsInSeasonRound(int competitionId, int seasonId, int round, int matchId) {
+        Integer count = jdbcTemplate.queryForObject(
+                """
+                        SELECT COUNT(*) FROM matches m
+                        JOIN seasons s ON s.id = m.season_id
+                        WHERE m.id = ?
+                          AND m.season_id = ?
+                          AND m.round = ?
+                          AND s.competition_id = ?
+                        """,
+                Integer.class,
+                matchId,
+                seasonId,
+                round,
+                competitionId);
+        return count != null && count > 0;
+    }
+
+    @Override
     public Optional<MatchDetail> loadMatchDetail(int competitionId, int seasonId, int round, int matchId) {
         Optional<MatchDetailHeaderBundle> header = loadHeader(competitionId, seasonId, round, matchId);
         if (header.isEmpty()) {

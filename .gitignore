@@ -1,4 +1,8 @@
 HELP.md
+
+# Documentación y SQL bajo docs/ (no versionar)
+docs/
+
 .env
 .env.*
 !.env.example
