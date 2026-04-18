@@ -3,7 +3,9 @@ package rndbet.rndbetpredictionsbackend.matchday.adapter.out.persistence;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.jdbc.core.JdbcTemplate;
+import rndbet.rndbetpredictionsbackend.jpa.repository.MatchRepository;
+import rndbet.rndbetpredictionsbackend.jpa.repository.SeasonRepository;
+import rndbet.rndbetpredictionsbackend.jpa.repository.TeamMatchStatsRepository;
 import rndbet.rndbetpredictionsbackend.matchday.application.port.out.LoadMatchdayFixturesPort;
 
 @Configuration
@@ -11,7 +13,10 @@ import rndbet.rndbetpredictionsbackend.matchday.application.port.out.LoadMatchda
 public class MatchdayPersistenceConfiguration {
 
     @Bean
-    LoadMatchdayFixturesPort loadMatchdayFixturesPort(JdbcTemplate jdbcTemplate) {
-        return new MatchdayPersistenceAdapter(jdbcTemplate);
+    LoadMatchdayFixturesPort loadMatchdayFixturesPort(
+            SeasonRepository seasonRepository,
+            MatchRepository matchRepository,
+            TeamMatchStatsRepository teamMatchStatsRepository) {
+        return new MatchdayJpaAdapter(seasonRepository, matchRepository, teamMatchStatsRepository);
     }
 }

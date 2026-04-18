@@ -18,18 +18,36 @@ final class MatchdayJdbcMapper {
      */
     static MatchdayFixture toFixture(ResultSet rs) throws SQLException {
         MatchRow m = MatchRow.from(rs);
+        return toFixture(
+                m,
+                rs.getString("home_team_name"),
+                rs.getString("home_team_logo_url"),
+                rs.getString("away_team_name"),
+                rs.getString("away_team_logo_url"),
+                rs.getInt("red_cards_home"),
+                rs.getInt("red_cards_away"));
+    }
+
+    static MatchdayFixture toFixture(
+            MatchRow m,
+            String homeTeamName,
+            String homeTeamLogoUrl,
+            String awayTeamName,
+            String awayTeamLogoUrl,
+            int redCardsHome,
+            int redCardsAway) {
         Instant when = m.date() != null ? m.date().toInstant() : null;
         return new MatchdayFixture(
                 Objects.requireNonNull(m.id()),
                 when,
                 m.status(),
-                rs.getString("home_team_name"),
-                rs.getString("home_team_logo_url"),
+                homeTeamName,
+                homeTeamLogoUrl,
                 m.homeScore(),
-                rs.getString("away_team_name"),
-                rs.getString("away_team_logo_url"),
+                awayTeamName,
+                awayTeamLogoUrl,
                 m.awayScore(),
-                rs.getInt("red_cards_home"),
-                rs.getInt("red_cards_away"));
+                redCardsHome,
+                redCardsAway);
     }
 }

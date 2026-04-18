@@ -3,7 +3,7 @@ package rndbet.rndbetpredictionsbackend.stattargets.adapter.out.persistence;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.jdbc.core.JdbcTemplate;
+import rndbet.rndbetpredictionsbackend.jpa.repository.UserMatchStatTargetRepository;
 import rndbet.rndbetpredictionsbackend.stattargets.application.port.out.UserMatchStatTargetsPort;
 
 @Configuration
@@ -11,7 +11,7 @@ import rndbet.rndbetpredictionsbackend.stattargets.application.port.out.UserMatc
 public class MatchStatTargetsPersistenceConfiguration {
 
     @Bean
-    UserMatchStatTargetsPort userMatchStatTargetsPort(JdbcTemplate jdbcTemplate) {
-        return new MatchStatTargetsPersistenceAdapter(jdbcTemplate);
+    UserMatchStatTargetsPort userMatchStatTargetsPort(UserMatchStatTargetRepository repository) {
+        return new MatchStatTargetsJpaAdapter(repository);
     }
 }

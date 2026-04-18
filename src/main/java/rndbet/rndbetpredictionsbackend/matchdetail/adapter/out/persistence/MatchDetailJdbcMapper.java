@@ -43,7 +43,15 @@ final class MatchDetailJdbcMapper {
             Map<String, Object> homeOut,
             Map<String, Object> awayOut)
             throws SQLException {
-        TeamMatchStatsRow row = TeamMatchStatsRow.from(rs);
+        applyTeamStatRow(TeamMatchStatsRow.from(rs), homeTeamId, awayTeamId, homeOut, awayOut);
+    }
+
+    static void applyTeamStatRow(
+            TeamMatchStatsRow row,
+            int homeTeamId,
+            int awayTeamId,
+            Map<String, Object> homeOut,
+            Map<String, Object> awayOut) {
         Integer tid = row.teamId();
         if (tid == null) {
             return;

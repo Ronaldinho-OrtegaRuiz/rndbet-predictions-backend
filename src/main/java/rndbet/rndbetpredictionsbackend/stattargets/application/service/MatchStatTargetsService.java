@@ -1,8 +1,9 @@
 package rndbet.rndbetpredictionsbackend.stattargets.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rndbet.rndbetpredictionsbackend.matchdetail.application.exception.MatchNotFoundException;
 import rndbet.rndbetpredictionsbackend.matchdetail.application.port.out.LoadMatchDetailPort;
 import rndbet.rndbetpredictionsbackend.standings.application.exception.SeasonNotFoundException;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MatchStatTargetsService implements MatchStatTargetsUseCase {
 
     private final LoadMatchDetailPort loadMatchDetailPort;
@@ -51,6 +53,7 @@ public class MatchStatTargetsService implements MatchStatTargetsUseCase {
     }
 
     @Override
+    @Transactional
     public MatchStatTarget create(
             long userId,
             int competitionId,
@@ -72,13 +75,14 @@ public class MatchStatTargetsService implements MatchStatTargetsUseCase {
             return userMatchStatTargetsPort
                     .findByIdAndUser(id, userId)
                     .orElseThrow(() -> new IllegalStateException("No se pudo recargar el objetivo creado."));
-        } catch (DuplicateKeyException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new StatTargetDuplicateException(
                     "Ya existe un objetivo para esta estadística y ámbito en este partido.");
         }
     }
 
     @Override
+    @Transactional
     public MatchStatTarget updateThreshold(
             long userId,
             int competitionId,
@@ -110,6 +114,7 @@ public class MatchStatTargetsService implements MatchStatTargetsUseCase {
     }
 
     @Override
+    @Transactional
     public void delete(
             long userId, int competitionId, int seasonId, int round, int matchId, long targetId) {
         ensureMatchContext(competitionId, seasonId, round, matchId);
