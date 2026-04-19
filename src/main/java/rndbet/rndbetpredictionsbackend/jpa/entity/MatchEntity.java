@@ -63,4 +63,11 @@ public class MatchEntity {
 
     @Column(name = "last_updated")
     private OffsetDateTime lastUpdated;
+
+    /** True cuando el listado del día ya se envió con éxito al scraper. */
+    @Column(name = "live_track_enqueued")
+    private Boolean liveTrackEnqueued;
+
+    @Column(name = "live_track_enqueued_at")
+    private OffsetDateTime liveTrackEnqueuedAt;
 }

@@ -1,6 +1,6 @@
 HELP.md
 
-# Documentación y SQL bajo docs/ (no versionar)
+# docs/ completo (incl. sql): no versionar
 docs/
 
 .env

@@ -1,10 +1,13 @@
 package rndbet.rndbetpredictionsbackend.jpa.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import rndbet.rndbetpredictionsbackend.jpa.entity.MatchEntity;
 
+import java.time.OffsetDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,4 +59,12 @@ public interface MatchRepository extends JpaRepository<MatchEntity, Integer> {
     List<MatchEntity> findFinishedBySeasonWithTeams(@Param("seasonId") int seasonId);
 
     List<MatchEntity> findBySeason_Id(int seasonId);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query(
+            """
+                    UPDATE MatchEntity m SET m.liveTrackEnqueued = true, m.liveTrackEnqueuedAt = :ts
+                    WHERE m.id IN :ids
+                    """)
+    int markLiveTrackEnqueued(@Param("ids") Collection<Integer> ids, @Param("ts") OffsetDateTime ts);
 }
