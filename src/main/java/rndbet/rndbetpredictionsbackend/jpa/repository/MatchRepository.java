@@ -67,4 +67,12 @@ public interface MatchRepository extends JpaRepository<MatchEntity, Integer> {
                     WHERE m.id IN :ids
                     """)
     int markLiveTrackEnqueued(@Param("ids") Collection<Integer> ids, @Param("ts") OffsetDateTime ts);
+
+    @Query(
+            """
+                    SELECT m FROM MatchEntity m
+                    JOIN FETCH m.homeTeam JOIN FETCH m.awayTeam
+                    WHERE m.id = :id
+                    """)
+    Optional<MatchEntity> findByIdWithTeams(@Param("id") int id);
 }

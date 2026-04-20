@@ -1,6 +1,7 @@
 package rndbet.rndbetpredictionsbackend.matchdetail.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 import rndbet.rndbetpredictionsbackend.db.TeamMatchStatsRow;
 import rndbet.rndbetpredictionsbackend.jpa.entity.MatchEntity;
 import rndbet.rndbetpredictionsbackend.jpa.entity.MatchEventEntity;
@@ -14,6 +15,9 @@ import rndbet.rndbetpredictionsbackend.matchdetail.application.port.out.LoadMatc
 import rndbet.rndbetpredictionsbackend.matchdetail.domain.MatchDetail;
 import rndbet.rndbetpredictionsbackend.matchdetail.domain.MatchEventLine;
 
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +26,8 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class MatchDetailJpaAdapter implements LoadMatchDetailPort {
+
+    private static final JsonMapper JSON = JsonMapper.shared();
 
     private final MatchRepository matchRepository;
     private final SeasonRepository seasonRepository;
@@ -68,7 +74,7 @@ public class MatchDetailJpaAdapter implements LoadMatchDetailPort {
     }
 
     private static MatchEventLine toEventLine(MatchEventEntity me, int homeTeamId, int awayTeamId) {
-        String jugador = me.getPlayer() != null ? me.getPlayer().getName() : null;
+        String jugador = resolveJugador(me);
         Integer tid = me.getTeamId();
         String lado = null;
         if (tid != null) {
@@ -79,5 +85,25 @@ public class MatchDetailJpaAdapter implements LoadMatchDetailPort {
             }
         }
         return new MatchEventLine(me.getMinute(), me.getEventType(), jugador, lado);
+    }
+
+    private static String resolveJugador(MatchEventEntity me) {
+        if (me.getPlayer() != null) {
+            return me.getPlayer().getName();
+        }
+        String extra = me.getExtraDataJson();
+        if (!StringUtils.hasText(extra)) {
+            return null;
+        }
+        try {
+            var node = JSON.readTree(extra);
+            if (node != null && node.has("player_name") && !node.get("player_name").isNull()) {
+                String v = node.get("player_name").asText();
+                return StringUtils.hasText(v) ? v.trim() : null;
+            }
+        } catch (JacksonException ignored) {
+            return null;
+        }
+        return null;
     }
 }

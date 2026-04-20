@@ -5,10 +5,13 @@ import rndbet.rndbetpredictionsbackend.jpa.entity.TeamMatchStatsEntity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface TeamMatchStatsRepository extends JpaRepository<TeamMatchStatsEntity, Integer> {
 
     List<TeamMatchStatsEntity> findByMatchId(Integer matchId);
 
     List<TeamMatchStatsEntity> findByMatchIdIn(Collection<Integer> matchIds);
+
+    Optional<TeamMatchStatsEntity> findByMatchIdAndTeamId(Integer matchId, Integer teamId);
 }
