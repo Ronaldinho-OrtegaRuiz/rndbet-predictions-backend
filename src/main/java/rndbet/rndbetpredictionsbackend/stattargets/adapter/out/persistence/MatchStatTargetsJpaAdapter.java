@@ -9,6 +9,7 @@ import rndbet.rndbetpredictionsbackend.stattargets.domain.StatMetric;
 import rndbet.rndbetpredictionsbackend.stattargets.domain.TargetScope;
 import rndbet.rndbetpredictionsbackend.stattargets.domain.TargetState;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,42 @@ public class MatchStatTargetsJpaAdapter implements UserMatchStatTargetsPort {
     @Override
     public boolean deleteByIdUserAndMatch(long targetId, long userId, int matchId) {
         return targetRepository.deleteByIdAndUserIdAndMatchId(targetId, userId, matchId) > 0;
+    }
+
+    @Override
+    public List<MatchStatTarget> listPendingByMatchId(int matchId) {
+        return targetRepository.findByMatchIdAndStateOrderByIdAsc(matchId, "PENDING").stream()
+                .map(MatchStatTargetsJpaAdapter::toDomain)
+                .toList();
+    }
+
+    @Override
+    public boolean markFulfilledIfPending(long targetId, Integer matchMinute) {
+        return targetRepository
+                .findById(targetId)
+                .filter(e -> "PENDING".equals(e.getState()))
+                .map(e -> {
+                    e.setState("FULFILLED");
+                    e.setFulfilledAt(OffsetDateTime.now());
+                    e.setFulfilledMatchMinute(matchMinute);
+                    targetRepository.save(e);
+                    return true;
+                })
+                .orElse(false);
+    }
+
+    @Override
+    public boolean markFailedIfPending(long targetId) {
+        return targetRepository
+                .findById(targetId)
+                .filter(e -> "PENDING".equals(e.getState()))
+                .map(e -> {
+                    e.setState("FAILED");
+                    e.setFailedAt(OffsetDateTime.now());
+                    targetRepository.save(e);
+                    return true;
+                })
+                .orElse(false);
     }
 
     private static MatchStatTarget toDomain(UserMatchStatTargetEntity e) {

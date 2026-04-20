@@ -13,6 +13,8 @@ public interface UserMatchStatTargetRepository extends JpaRepository<UserMatchSt
 
     List<UserMatchStatTargetEntity> findByUserIdAndMatchIdOrderByIdAsc(long userId, int matchId);
 
+    List<UserMatchStatTargetEntity> findByMatchIdAndStateOrderByIdAsc(int matchId, String state);
+
     Optional<UserMatchStatTargetEntity> findByIdAndUserId(long id, long userId);
 
     @Modifying(clearAutomatically = true)

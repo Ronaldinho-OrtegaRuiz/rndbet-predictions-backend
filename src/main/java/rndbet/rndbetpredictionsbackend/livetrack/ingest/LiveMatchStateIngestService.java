@@ -13,6 +13,7 @@ import rndbet.rndbetpredictionsbackend.jpa.entity.TeamMatchStatsEntity;
 import rndbet.rndbetpredictionsbackend.jpa.repository.MatchEventRepository;
 import rndbet.rndbetpredictionsbackend.jpa.repository.MatchRepository;
 import rndbet.rndbetpredictionsbackend.jpa.repository.TeamMatchStatsRepository;
+import rndbet.rndbetpredictionsbackend.stattargets.application.service.StatTargetLiveEvaluationService;
 import rndbet.rndbetpredictionsbackend.livetrack.ingest.LiveMatchStateIngestDtos.LiveMatchEventPayload;
 import rndbet.rndbetpredictionsbackend.livetrack.ingest.LiveMatchStateIngestDtos.LiveMatchStateIngestRequest;
 import rndbet.rndbetpredictionsbackend.livetrack.ingest.LiveMatchStateIngestDtos.LiveMatchStateIngestResponse;
@@ -35,6 +36,7 @@ public class LiveMatchStateIngestService {
     private final MatchRepository matchRepository;
     private final TeamMatchStatsRepository teamMatchStatsRepository;
     private final MatchEventRepository matchEventRepository;
+    private final StatTargetLiveEvaluationService statTargetLiveEvaluationService;
 
     @Transactional
     public LiveMatchStateIngestResponse ingest(LiveMatchStateIngestRequest req) {
@@ -152,6 +154,7 @@ public class LiveMatchStateIngestService {
         }
 
         matchRepository.save(match);
+        statTargetLiveEvaluationService.evaluateAfterIngest(match);
         return new LiveMatchStateIngestResponse(true, match.getId(), inserted);
     }
 

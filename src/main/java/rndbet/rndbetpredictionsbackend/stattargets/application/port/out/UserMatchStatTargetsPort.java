@@ -18,4 +18,10 @@ public interface UserMatchStatTargetsPort {
     boolean updateThresholdIfPending(long targetId, long userId, int matchId, int newThreshold);
 
     boolean deleteByIdUserAndMatch(long targetId, long userId, int matchId);
+
+    List<MatchStatTarget> listPendingByMatchId(int matchId);
+
+    boolean markFulfilledIfPending(long targetId, Integer matchMinute);
+
+    boolean markFailedIfPending(long targetId);
 }
