@@ -3,15 +3,33 @@ HELP.md
 # docs/ completo (incl. sql): no versionar
 docs/
 
+# ── Secretos / entorno local ───────────────────────────────────────────────
 .env
 .env.*
 !.env.example
+!**/.env.example
+
 src/main/resources/application-local.properties
+
+# ── Java / Maven ─────────────────────────────────────────────────────────────
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# ── Python (scripts/football ingestión) ──────────────────────────────────────
+scripts/football/.venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ── IDEs ─────────────────────────────────────────────────────────────────────
 ### STS ###
 .apt_generated
 .classpath
@@ -39,3 +57,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# ── Notas locales (no versionar) ─────────────────────────────────────────────
+*.text
+RESUMEN-*.md
+live-tracking-*.md
+live-noti-*.text
